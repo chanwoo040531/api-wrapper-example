@@ -7,13 +7,18 @@ import jakarta.persistence.MappedSuperclass;
 import lombok.Getter;
 
 import java.util.Objects;
+import java.util.function.Function;
 
 @Getter
 @MappedSuperclass
-public class BaseEntity {
+public abstract class BaseEntity {
     @Id
     @GeneratedValue(strategy = GenerationType.IDENTITY)
     private Long id;
+
+    public <T extends BaseEntity, U> U as(Function<T, U> function) {
+        return function.apply((T) this);
+    }
 
     @Override
     public boolean equals(Object obj) {
