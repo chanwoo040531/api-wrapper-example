@@ -13,4 +13,18 @@ public class PlanWriteService {
     public void create(Plan plan) {
         planRepository.save(plan);
     }
+
+    public void delete(Long id) {
+        planRepository.deleteById(id);
+    }
+
+    public void update(Long id, String name, String description) {
+        planRepository.findById(id)
+                .ifPresentOrElse(
+                    foundPlan -> foundPlan.update(name, description),
+                    () -> {
+                        throw new IllegalArgumentException("Plan not found");
+                    }
+                );
+    }
 }

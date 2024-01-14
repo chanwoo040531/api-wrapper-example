@@ -31,4 +31,9 @@ public class Plan extends BaseEntity {
         this.name = name;
         this.description = description;
     }
+
+    public void update(String name, String description) {
+        this.name = name == null ? this.name : name;
+        this.description = description == null ? this.description : description;
+    }
 }
