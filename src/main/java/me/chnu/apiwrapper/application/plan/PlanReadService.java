@@ -5,6 +5,7 @@ import me.chnu.apiwrapper.domain.plan.Plan;
 import me.chnu.apiwrapper.domain.plan.PlanRepository;
 import me.chnu.apiwrapper.util.annotation.ReadService;
 import me.chnu.apiwrapper.util.exception.PlanNotFoundException;
+import org.springframework.data.domain.Pageable;
 
 import java.util.List;
 
@@ -18,7 +19,11 @@ public class PlanReadService {
                 .orElseThrow(() -> new PlanNotFoundException("Plan not found"));
     }
 
-    public List<Plan> getAll() {
-        return planRepository.findAll();
+    public List<Plan> getAll(Pageable pageable) {
+        return planRepository.findAllByPage(pageable);
+    }
+
+    public long count() {
+        return planRepository.count();
     }
 }

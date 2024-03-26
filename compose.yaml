@@ -2,9 +2,11 @@ services:
   mysql:
     image: 'mysql:latest'
     environment:
-      - 'MYSQL_DATABASE=master'
-      - 'MYSQL_PASSWORD=2122'
-      - 'MYSQL_ROOT_PASSWORD=2122'
-      - 'MYSQL_USER=kcw'
+      - 'MYSQL_DATABASE=${MYSQL_DATABASE}'
+      - 'MYSQL_PASSWORD=${MYSQL_PASSWORD}'
+      - 'MYSQL_ROOT_PASSWORD=${MYSQL_ROOT_PASSWORD}'
+      - 'MYSQL_USER=${MYSQL_USER}'
     ports:
-      - '3306'
+      - '${MYSQL_PORT}:${MYSQL_PORT}'
+    volumes:
+      - './var/lib/mysql:/var/lib/mysql'

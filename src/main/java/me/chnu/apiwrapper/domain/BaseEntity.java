@@ -24,7 +24,7 @@ public abstract class BaseEntity {
     public boolean equals(Object obj) {
         if (this == obj) return true;
         if (!(obj instanceof BaseEntity that)) return false;
-        return Objects.equals(this.id, that.getId());
+        return Objects.equals(this.getId(), that.getId());
     }
 
     @Override

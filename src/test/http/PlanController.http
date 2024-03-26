@@ -12,9 +12,8 @@ GET http://localhost:8080/api/v1/plans
 Content-Type: application/json
 
 ### 플랜 상세 조회
-GET http://localhost:8080/api/v1/plans/14
+GET http://localhost:8080/api/v1/plans/0
 Content-Type: application/json
-
 
 ### 플랜 삭제
 DELETE http://localhost:8080/api/v1/plans/14

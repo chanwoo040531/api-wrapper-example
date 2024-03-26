@@ -1,0 +1,52 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <title>Title</title>
+</head>
+<body>
+    <h1>Get Plan</h1>
+    <label for="input">Enter Plan ID: </label>
+    <input id="input" type="number">
+    <button>Get Plan</button>
+    <div>
+        <h2>Plan Details</h2>
+        <div>
+            <span>plan title:</span>
+            <span id="planTitle"></span>
+        </div>
+        <div>
+            <span>plan description:</span>
+            <span id="planDescription"></span>
+        </div>
+        <div>
+            <span>created date</span>
+            <span id="createdAt"></span>
+        </div>
+    </div>
+</body>
+<script>
+    const input = document.getElementById('input');
+    const planTitle = document.getElementById('planTitle');
+    const planDescription = document.getElementById('planDescription');
+    const createdAt = document.getElementById('createdAt');
+
+    const getPlan = () => {
+        const id = input.value;
+        fetch(`http://localhost:8080/api/v1/plans/${id}`)
+            .then(response => response.json())
+            .then(data => {
+                if (!data.body) {
+                    alert(data.message);
+                    return;
+                }
+
+                const body = data.body;
+                planTitle.innerText = body.name;
+                planDescription.innerText = body.description;
+                createdAt.innerText = body.createdAt;
+            });
+    };
+    document.querySelector('button').addEventListener('click', getPlan);
+</script>
+</html>

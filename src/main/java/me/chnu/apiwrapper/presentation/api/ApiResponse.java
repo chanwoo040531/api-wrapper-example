@@ -1,18 +1,13 @@
 package me.chnu.apiwrapper.presentation.api;
 
-import lombok.Getter;
+import io.swagger.v3.oas.annotations.media.Schema;
 
-@Getter
-public final class ApiResponse<T> {
-    private final T body;
-
-    private final String message;
-
-    private ApiResponse(T body, String message) {
-        this.body = body;
-        this.message = message;
-    }
-
+public record ApiResponse<T>(
+        @Schema(description = "응답 데이터")
+        T body,
+        @Schema(description = "에러 메시지")
+        String message
+) {
     public static <T> ApiResponse<T> ok(T body) {
         return new ApiResponse<>(body, null);
     }
