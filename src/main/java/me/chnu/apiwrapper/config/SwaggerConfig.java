@@ -17,9 +17,9 @@ public class SwaggerConfig {
     @Bean
     public GroupedOpenApi publicAPI() {
         final Info info = new Info()
-                .title("Family Meta API")
+                .title("API Wrapper Example API")
                 .version("v1")
-                .description("This is a sample Spring Boot RESTful service using springdoc-openapi and OpenAPI 3.");
+                .description("API Wrapper에 대한 예시");
 
         return GroupedOpenApi.builder()
                 .group("public-api")
