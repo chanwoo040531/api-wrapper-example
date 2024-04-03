@@ -5,10 +5,12 @@ import lombok.RequiredArgsConstructor;
 import me.chnu.apiwrapper.application.plan.PlanReadService;
 import me.chnu.apiwrapper.application.plan.PlanWriteService;
 import me.chnu.apiwrapper.presentation.api.ApiResponse;
+import org.springdoc.core.annotations.ParameterObject;
 import org.springframework.data.domain.PageImpl;
 import org.springframework.data.domain.Pageable;
 import org.springframework.data.web.PageableDefault;
 import org.springframework.http.HttpStatus;
+import org.springframework.http.ResponseEntity;
 import org.springframework.web.bind.annotation.*;
 
 import java.util.List;
@@ -21,15 +23,15 @@ public class PlanController {
     private final PlanReadService planReadService;
 
     @PostMapping
-    @ResponseStatus(HttpStatus.CREATED)
-    public void create(@RequestBody PlanDTOs.New newPlan) {
+    public ResponseEntity<ApiResponse<String>> create(@RequestBody PlanDTOs.New newPlan) {
         planWriteService.create(newPlan.toPlan());
+
+        return ResponseEntity.accepted().body(ApiResponse.ok("Successfully created"));
     }
 
     @GetMapping
-    @ResponseStatus(HttpStatus.OK)
-    public ApiResponse<PageImpl<PlanDTOs.Info>> getAll(
-            @Parameter(hidden = true)
+    public ResponseEntity<ApiResponse<PageImpl<PlanDTOs.Info>>> getAll(
+            @ParameterObject
             @PageableDefault Pageable pageable
     ) {
         List<PlanDTOs.Info> infoList = planReadService.getAll(pageable).stream()
@@ -39,27 +41,29 @@ public class PlanController {
 
         PageImpl<PlanDTOs.Info> page = new PageImpl<>(infoList, pageable, count);
 
-        return ApiResponse.ok(page);
+        return ResponseEntity.ok(ApiResponse.ok(page));
     }
 
     @GetMapping("/{plan-id}")
-    @ResponseStatus(HttpStatus.OK)
-    public ApiResponse<PlanDTOs.DetailInfo> get(@PathVariable("plan-id") Long planId) {
+    public ResponseEntity<ApiResponse<PlanDTOs.DetailInfo>> get(@PathVariable("plan-id") Long planId) {
         PlanDTOs.DetailInfo planDetailInfo = planReadService.get(planId)
                 .as(PlanDTOs.DetailInfo::from);
 
-        return ApiResponse.ok(planDetailInfo);
+        return ResponseEntity.ok(ApiResponse.ok(planDetailInfo));
     }
 
     @PutMapping("/{plan-id}")
     @ResponseStatus(HttpStatus.NO_CONTENT)
-    public void update(@PathVariable("plan-id") Long planId, @RequestBody PlanDTOs.New newPlan) {
+    public ResponseEntity<ApiResponse<String>> update(@PathVariable("plan-id") Long planId, @RequestBody PlanDTOs.New newPlan) {
         planWriteService.update(planId, newPlan.name(), newPlan.description());
+
+        return ResponseEntity.accepted().body(ApiResponse.ok("Successfully updated"));
     }
 
     @DeleteMapping("/{plan-id}")
-    @ResponseStatus(HttpStatus.NO_CONTENT)
-    public void delete(@PathVariable("plan-id") Long planId) {
+    public ResponseEntity<ApiResponse<String>> delete(@PathVariable("plan-id") Long planId) {
         planWriteService.delete(planId);
+
+        return ResponseEntity.accepted().body(ApiResponse.ok("Successfully deleted"));
     }
 }
